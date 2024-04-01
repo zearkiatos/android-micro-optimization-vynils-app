@@ -66,12 +66,11 @@ class NetworkServiceAdapter constructor(context: Context) {
             Response.Listener<String> { response ->
                 val resp = JSONArray(response)
                 val list = mutableListOf<Comment>()
+                var item:JSONObject? = null
                 for (i in 0 until resp.length()) {
-                    val item = resp.getJSONObject(i)
-                    val rating = item.getInt("rating").toString()
-                    val description = item.getString("description")
+                    item = resp.getJSONObject(i)
                     Log.d("Response", item.toString())
-                    list.add(i, Comment(albumId = albumId, rating = rating, description = description))
+                    list.add(i, Comment(albumId = albumId, rating = item.getInt("rating").toString(), description = item.getString("description")))
                 }
                 onComplete(list)
             },

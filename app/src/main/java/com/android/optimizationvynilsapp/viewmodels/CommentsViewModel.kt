@@ -84,13 +84,10 @@ class CommentsViewModel (application: Application, albumId: Int) :  AndroidViewM
     }
 
     fun printByRating(lower:Int, upper:Int){
-        var stringBuffer = StringBuffer()
-        if(!_comments.value.isNullOrEmpty()){
-            for (i in 0 until _comments.value!!.size) {
-                if (_comments.value!!.get(i).rating.toInt() < upper && _comments.value!!.get(i).rating.toInt() > lower) {
-                    val string = _comments.value!!.get(i).description
-                    stringBuffer.append(string + "\n")
-                }
+        val stringBuffer = StringBuffer()
+        comments.value?.forEach {
+            if(it.rating.toInt() in lower until upper){
+                stringBuffer.append("${it.description}\n")
             }
         }
         Log.d("result", "Comentarios en rating: [ $lower , $upper ]: ${stringBuffer.toString()}")
@@ -98,16 +95,9 @@ class CommentsViewModel (application: Application, albumId: Int) :  AndroidViewM
 
 
     fun printListOfCommentsStartingUpper(){
-        var list = mutableListOf<String>()
         if(!_comments.value.isNullOrEmpty()){
-            for (i in 0 until _comments.value!!.size) {
-                val comment = _comments.value!!.get(i).description
-                if (comment.toCharArray()[0].isUpperCase()) {
-                    list.add(comment)
-                }
-            }
+            Log.d("result", "Comentarios con mayúscula: ${_comments.value!!.filter { it.description[0].isUpperCase() }}")
         }
-        Log.d("result", "Comentarios con mayúscula:"+list.toString())
     }
 
 
